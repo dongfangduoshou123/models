@@ -1,0 +1,3125 @@
+name: "shufflenet"
+op {
+  input: "gpu_0/data"
+  input: "gpu_0/conv3_0_w"
+  input: "gpu_0/conv3_0_b"
+  output: "gpu_0/conv3_0"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "stride"
+    i: 2
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/conv3_0"
+  input: "gpu_0/conv3_0_bn_s"
+  input: "gpu_0/conv3_0_bn_b"
+  input: "gpu_0/conv3_0_bn_rm"
+  input: "gpu_0/conv3_0_bn_riv"
+  output: "gpu_0/conv3_0_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/conv3_0_bn"
+  output: "gpu_0/conv3_0_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/conv3_0_bn"
+  output: "gpu_0/pool_0"
+  name: ""
+  type: "MaxPool"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "stride"
+    i: 2
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/pool_0"
+  input: "gpu_0/gconv1_0_w"
+  output: "gpu_0/gconv1_0"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_0"
+  input: "gpu_0/gconv1_0_bn_s"
+  input: "gpu_0/gconv1_0_bn_b"
+  input: "gpu_0/gconv1_0_bn_rm"
+  input: "gpu_0/gconv1_0_bn_riv"
+  output: "gpu_0/gconv1_0_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_0_bn"
+  output: "gpu_0/gconv1_0_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_0_bn"
+  output: "gpu_0/shuffle_0"
+  name: ""
+  type: "ChannelShuffle"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/shuffle_0"
+  input: "gpu_0/gconv3_0_w"
+  output: "gpu_0/gconv3_0"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 112
+  }
+  arg {
+    name: "stride"
+    i: 2
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv3_0"
+  input: "gpu_0/gconv3_0_bn_s"
+  input: "gpu_0/gconv3_0_bn_b"
+  input: "gpu_0/gconv3_0_bn_rm"
+  input: "gpu_0/gconv3_0_bn_riv"
+  output: "gpu_0/gconv3_0_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv3_0_bn"
+  input: "gpu_0/gconv1_1_w"
+  output: "gpu_0/gconv1_1"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_1"
+  input: "gpu_0/gconv1_1_bn_s"
+  input: "gpu_0/gconv1_1_bn_b"
+  input: "gpu_0/gconv1_1_bn_rm"
+  input: "gpu_0/gconv1_1_bn_riv"
+  output: "gpu_0/gconv1_1_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/pool_0"
+  output: "gpu_0/pool_1"
+  name: ""
+  type: "AveragePool"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "stride"
+    i: 2
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_1_bn"
+  input: "gpu_0/pool_1"
+  output: "gpu_0/block0"
+  output: "gpu_0/_block0_concat_dims"
+  name: ""
+  type: "Concat"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block0"
+  output: "gpu_0/block0"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/block0"
+  input: "gpu_0/gconv1_2_w"
+  output: "gpu_0/gconv1_2"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_2"
+  input: "gpu_0/gconv1_2_bn_s"
+  input: "gpu_0/gconv1_2_bn_b"
+  input: "gpu_0/gconv1_2_bn_rm"
+  input: "gpu_0/gconv1_2_bn_riv"
+  output: "gpu_0/gconv1_2_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_2_bn"
+  output: "gpu_0/gconv1_2_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_2_bn"
+  output: "gpu_0/shuffle_1"
+  name: ""
+  type: "ChannelShuffle"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/shuffle_1"
+  input: "gpu_0/gconv3_1_w"
+  output: "gpu_0/gconv3_1"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 136
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv3_1"
+  input: "gpu_0/gconv3_1_bn_s"
+  input: "gpu_0/gconv3_1_bn_b"
+  input: "gpu_0/gconv3_1_bn_rm"
+  input: "gpu_0/gconv3_1_bn_riv"
+  output: "gpu_0/gconv3_1_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv3_1_bn"
+  input: "gpu_0/gconv1_3_w"
+  output: "gpu_0/gconv1_3"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_3"
+  input: "gpu_0/gconv1_3_bn_s"
+  input: "gpu_0/gconv1_3_bn_b"
+  input: "gpu_0/gconv1_3_bn_rm"
+  input: "gpu_0/gconv1_3_bn_riv"
+  output: "gpu_0/gconv1_3_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_3_bn"
+  input: "gpu_0/block0"
+  output: "gpu_0/block1"
+  name: ""
+  type: "Sum"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block1"
+  output: "gpu_0/block1"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/block1"
+  input: "gpu_0/gconv1_4_w"
+  output: "gpu_0/gconv1_4"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_4"
+  input: "gpu_0/gconv1_4_bn_s"
+  input: "gpu_0/gconv1_4_bn_b"
+  input: "gpu_0/gconv1_4_bn_rm"
+  input: "gpu_0/gconv1_4_bn_riv"
+  output: "gpu_0/gconv1_4_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_4_bn"
+  output: "gpu_0/gconv1_4_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_4_bn"
+  output: "gpu_0/shuffle_2"
+  name: ""
+  type: "ChannelShuffle"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/shuffle_2"
+  input: "gpu_0/gconv3_2_w"
+  output: "gpu_0/gconv3_2"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 136
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv3_2"
+  input: "gpu_0/gconv3_2_bn_s"
+  input: "gpu_0/gconv3_2_bn_b"
+  input: "gpu_0/gconv3_2_bn_rm"
+  input: "gpu_0/gconv3_2_bn_riv"
+  output: "gpu_0/gconv3_2_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv3_2_bn"
+  input: "gpu_0/gconv1_5_w"
+  output: "gpu_0/gconv1_5"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_5"
+  input: "gpu_0/gconv1_5_bn_s"
+  input: "gpu_0/gconv1_5_bn_b"
+  input: "gpu_0/gconv1_5_bn_rm"
+  input: "gpu_0/gconv1_5_bn_riv"
+  output: "gpu_0/gconv1_5_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_5_bn"
+  input: "gpu_0/block1"
+  output: "gpu_0/block2"
+  name: ""
+  type: "Sum"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block2"
+  output: "gpu_0/block2"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/block2"
+  input: "gpu_0/gconv1_6_w"
+  output: "gpu_0/gconv1_6"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_6"
+  input: "gpu_0/gconv1_6_bn_s"
+  input: "gpu_0/gconv1_6_bn_b"
+  input: "gpu_0/gconv1_6_bn_rm"
+  input: "gpu_0/gconv1_6_bn_riv"
+  output: "gpu_0/gconv1_6_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_6_bn"
+  output: "gpu_0/gconv1_6_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_6_bn"
+  output: "gpu_0/shuffle_3"
+  name: ""
+  type: "ChannelShuffle"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/shuffle_3"
+  input: "gpu_0/gconv3_3_w"
+  output: "gpu_0/gconv3_3"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 136
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv3_3"
+  input: "gpu_0/gconv3_3_bn_s"
+  input: "gpu_0/gconv3_3_bn_b"
+  input: "gpu_0/gconv3_3_bn_rm"
+  input: "gpu_0/gconv3_3_bn_riv"
+  output: "gpu_0/gconv3_3_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv3_3_bn"
+  input: "gpu_0/gconv1_7_w"
+  output: "gpu_0/gconv1_7"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_7"
+  input: "gpu_0/gconv1_7_bn_s"
+  input: "gpu_0/gconv1_7_bn_b"
+  input: "gpu_0/gconv1_7_bn_rm"
+  input: "gpu_0/gconv1_7_bn_riv"
+  output: "gpu_0/gconv1_7_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_7_bn"
+  input: "gpu_0/block2"
+  output: "gpu_0/block3"
+  name: ""
+  type: "Sum"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block3"
+  output: "gpu_0/block3"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/block3"
+  input: "gpu_0/gconv1_8_w"
+  output: "gpu_0/gconv1_8"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_8"
+  input: "gpu_0/gconv1_8_bn_s"
+  input: "gpu_0/gconv1_8_bn_b"
+  input: "gpu_0/gconv1_8_bn_rm"
+  input: "gpu_0/gconv1_8_bn_riv"
+  output: "gpu_0/gconv1_8_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_8_bn"
+  output: "gpu_0/gconv1_8_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_8_bn"
+  output: "gpu_0/shuffle_4"
+  name: ""
+  type: "ChannelShuffle"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/shuffle_4"
+  input: "gpu_0/gconv3_4_w"
+  output: "gpu_0/gconv3_4"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 136
+  }
+  arg {
+    name: "stride"
+    i: 2
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv3_4"
+  input: "gpu_0/gconv3_4_bn_s"
+  input: "gpu_0/gconv3_4_bn_b"
+  input: "gpu_0/gconv3_4_bn_rm"
+  input: "gpu_0/gconv3_4_bn_riv"
+  output: "gpu_0/gconv3_4_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv3_4_bn"
+  input: "gpu_0/gconv1_9_w"
+  output: "gpu_0/gconv1_9"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_9"
+  input: "gpu_0/gconv1_9_bn_s"
+  input: "gpu_0/gconv1_9_bn_b"
+  input: "gpu_0/gconv1_9_bn_rm"
+  input: "gpu_0/gconv1_9_bn_riv"
+  output: "gpu_0/gconv1_9_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block3"
+  output: "gpu_0/pool_2"
+  name: ""
+  type: "AveragePool"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "stride"
+    i: 2
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_9_bn"
+  input: "gpu_0/pool_2"
+  output: "gpu_0/block4"
+  output: "gpu_0/_block4_concat_dims"
+  name: ""
+  type: "Concat"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block4"
+  output: "gpu_0/block4"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/block4"
+  input: "gpu_0/gconv1_10_w"
+  output: "gpu_0/gconv1_10"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_10"
+  input: "gpu_0/gconv1_10_bn_s"
+  input: "gpu_0/gconv1_10_bn_b"
+  input: "gpu_0/gconv1_10_bn_rm"
+  input: "gpu_0/gconv1_10_bn_riv"
+  output: "gpu_0/gconv1_10_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_10_bn"
+  output: "gpu_0/gconv1_10_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_10_bn"
+  output: "gpu_0/shuffle_5"
+  name: ""
+  type: "ChannelShuffle"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/shuffle_5"
+  input: "gpu_0/gconv3_5_w"
+  output: "gpu_0/gconv3_5"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 272
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv3_5"
+  input: "gpu_0/gconv3_5_bn_s"
+  input: "gpu_0/gconv3_5_bn_b"
+  input: "gpu_0/gconv3_5_bn_rm"
+  input: "gpu_0/gconv3_5_bn_riv"
+  output: "gpu_0/gconv3_5_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv3_5_bn"
+  input: "gpu_0/gconv1_11_w"
+  output: "gpu_0/gconv1_11"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_11"
+  input: "gpu_0/gconv1_11_bn_s"
+  input: "gpu_0/gconv1_11_bn_b"
+  input: "gpu_0/gconv1_11_bn_rm"
+  input: "gpu_0/gconv1_11_bn_riv"
+  output: "gpu_0/gconv1_11_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_11_bn"
+  input: "gpu_0/block4"
+  output: "gpu_0/block5"
+  name: ""
+  type: "Sum"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block5"
+  output: "gpu_0/block5"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/block5"
+  input: "gpu_0/gconv1_12_w"
+  output: "gpu_0/gconv1_12"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_12"
+  input: "gpu_0/gconv1_12_bn_s"
+  input: "gpu_0/gconv1_12_bn_b"
+  input: "gpu_0/gconv1_12_bn_rm"
+  input: "gpu_0/gconv1_12_bn_riv"
+  output: "gpu_0/gconv1_12_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_12_bn"
+  output: "gpu_0/gconv1_12_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_12_bn"
+  output: "gpu_0/shuffle_6"
+  name: ""
+  type: "ChannelShuffle"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/shuffle_6"
+  input: "gpu_0/gconv3_6_w"
+  output: "gpu_0/gconv3_6"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 272
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv3_6"
+  input: "gpu_0/gconv3_6_bn_s"
+  input: "gpu_0/gconv3_6_bn_b"
+  input: "gpu_0/gconv3_6_bn_rm"
+  input: "gpu_0/gconv3_6_bn_riv"
+  output: "gpu_0/gconv3_6_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv3_6_bn"
+  input: "gpu_0/gconv1_13_w"
+  output: "gpu_0/gconv1_13"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_13"
+  input: "gpu_0/gconv1_13_bn_s"
+  input: "gpu_0/gconv1_13_bn_b"
+  input: "gpu_0/gconv1_13_bn_rm"
+  input: "gpu_0/gconv1_13_bn_riv"
+  output: "gpu_0/gconv1_13_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_13_bn"
+  input: "gpu_0/block5"
+  output: "gpu_0/block6"
+  name: ""
+  type: "Sum"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block6"
+  output: "gpu_0/block6"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/block6"
+  input: "gpu_0/gconv1_14_w"
+  output: "gpu_0/gconv1_14"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_14"
+  input: "gpu_0/gconv1_14_bn_s"
+  input: "gpu_0/gconv1_14_bn_b"
+  input: "gpu_0/gconv1_14_bn_rm"
+  input: "gpu_0/gconv1_14_bn_riv"
+  output: "gpu_0/gconv1_14_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_14_bn"
+  output: "gpu_0/gconv1_14_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_14_bn"
+  output: "gpu_0/shuffle_7"
+  name: ""
+  type: "ChannelShuffle"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/shuffle_7"
+  input: "gpu_0/gconv3_7_w"
+  output: "gpu_0/gconv3_7"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 272
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv3_7"
+  input: "gpu_0/gconv3_7_bn_s"
+  input: "gpu_0/gconv3_7_bn_b"
+  input: "gpu_0/gconv3_7_bn_rm"
+  input: "gpu_0/gconv3_7_bn_riv"
+  output: "gpu_0/gconv3_7_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv3_7_bn"
+  input: "gpu_0/gconv1_15_w"
+  output: "gpu_0/gconv1_15"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_15"
+  input: "gpu_0/gconv1_15_bn_s"
+  input: "gpu_0/gconv1_15_bn_b"
+  input: "gpu_0/gconv1_15_bn_rm"
+  input: "gpu_0/gconv1_15_bn_riv"
+  output: "gpu_0/gconv1_15_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_15_bn"
+  input: "gpu_0/block6"
+  output: "gpu_0/block7"
+  name: ""
+  type: "Sum"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block7"
+  output: "gpu_0/block7"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/block7"
+  input: "gpu_0/gconv1_16_w"
+  output: "gpu_0/gconv1_16"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_16"
+  input: "gpu_0/gconv1_16_bn_s"
+  input: "gpu_0/gconv1_16_bn_b"
+  input: "gpu_0/gconv1_16_bn_rm"
+  input: "gpu_0/gconv1_16_bn_riv"
+  output: "gpu_0/gconv1_16_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_16_bn"
+  output: "gpu_0/gconv1_16_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_16_bn"
+  output: "gpu_0/shuffle_8"
+  name: ""
+  type: "ChannelShuffle"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/shuffle_8"
+  input: "gpu_0/gconv3_8_w"
+  output: "gpu_0/gconv3_8"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 272
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv3_8"
+  input: "gpu_0/gconv3_8_bn_s"
+  input: "gpu_0/gconv3_8_bn_b"
+  input: "gpu_0/gconv3_8_bn_rm"
+  input: "gpu_0/gconv3_8_bn_riv"
+  output: "gpu_0/gconv3_8_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv3_8_bn"
+  input: "gpu_0/gconv1_17_w"
+  output: "gpu_0/gconv1_17"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_17"
+  input: "gpu_0/gconv1_17_bn_s"
+  input: "gpu_0/gconv1_17_bn_b"
+  input: "gpu_0/gconv1_17_bn_rm"
+  input: "gpu_0/gconv1_17_bn_riv"
+  output: "gpu_0/gconv1_17_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_17_bn"
+  input: "gpu_0/block7"
+  output: "gpu_0/block8"
+  name: ""
+  type: "Sum"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block8"
+  output: "gpu_0/block8"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/block8"
+  input: "gpu_0/gconv1_18_w"
+  output: "gpu_0/gconv1_18"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_18"
+  input: "gpu_0/gconv1_18_bn_s"
+  input: "gpu_0/gconv1_18_bn_b"
+  input: "gpu_0/gconv1_18_bn_rm"
+  input: "gpu_0/gconv1_18_bn_riv"
+  output: "gpu_0/gconv1_18_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_18_bn"
+  output: "gpu_0/gconv1_18_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_18_bn"
+  output: "gpu_0/shuffle_9"
+  name: ""
+  type: "ChannelShuffle"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/shuffle_9"
+  input: "gpu_0/gconv3_9_w"
+  output: "gpu_0/gconv3_9"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 272
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv3_9"
+  input: "gpu_0/gconv3_9_bn_s"
+  input: "gpu_0/gconv3_9_bn_b"
+  input: "gpu_0/gconv3_9_bn_rm"
+  input: "gpu_0/gconv3_9_bn_riv"
+  output: "gpu_0/gconv3_9_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv3_9_bn"
+  input: "gpu_0/gconv1_19_w"
+  output: "gpu_0/gconv1_19"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_19"
+  input: "gpu_0/gconv1_19_bn_s"
+  input: "gpu_0/gconv1_19_bn_b"
+  input: "gpu_0/gconv1_19_bn_rm"
+  input: "gpu_0/gconv1_19_bn_riv"
+  output: "gpu_0/gconv1_19_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_19_bn"
+  input: "gpu_0/block8"
+  output: "gpu_0/block9"
+  name: ""
+  type: "Sum"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block9"
+  output: "gpu_0/block9"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/block9"
+  input: "gpu_0/gconv1_20_w"
+  output: "gpu_0/gconv1_20"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_20"
+  input: "gpu_0/gconv1_20_bn_s"
+  input: "gpu_0/gconv1_20_bn_b"
+  input: "gpu_0/gconv1_20_bn_rm"
+  input: "gpu_0/gconv1_20_bn_riv"
+  output: "gpu_0/gconv1_20_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_20_bn"
+  output: "gpu_0/gconv1_20_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_20_bn"
+  output: "gpu_0/shuffle_10"
+  name: ""
+  type: "ChannelShuffle"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/shuffle_10"
+  input: "gpu_0/gconv3_10_w"
+  output: "gpu_0/gconv3_10"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 272
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv3_10"
+  input: "gpu_0/gconv3_10_bn_s"
+  input: "gpu_0/gconv3_10_bn_b"
+  input: "gpu_0/gconv3_10_bn_rm"
+  input: "gpu_0/gconv3_10_bn_riv"
+  output: "gpu_0/gconv3_10_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv3_10_bn"
+  input: "gpu_0/gconv1_21_w"
+  output: "gpu_0/gconv1_21"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_21"
+  input: "gpu_0/gconv1_21_bn_s"
+  input: "gpu_0/gconv1_21_bn_b"
+  input: "gpu_0/gconv1_21_bn_rm"
+  input: "gpu_0/gconv1_21_bn_riv"
+  output: "gpu_0/gconv1_21_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_21_bn"
+  input: "gpu_0/block9"
+  output: "gpu_0/block10"
+  name: ""
+  type: "Sum"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block10"
+  output: "gpu_0/block10"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/block10"
+  input: "gpu_0/gconv1_22_w"
+  output: "gpu_0/gconv1_22"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_22"
+  input: "gpu_0/gconv1_22_bn_s"
+  input: "gpu_0/gconv1_22_bn_b"
+  input: "gpu_0/gconv1_22_bn_rm"
+  input: "gpu_0/gconv1_22_bn_riv"
+  output: "gpu_0/gconv1_22_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_22_bn"
+  output: "gpu_0/gconv1_22_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_22_bn"
+  output: "gpu_0/shuffle_11"
+  name: ""
+  type: "ChannelShuffle"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/shuffle_11"
+  input: "gpu_0/gconv3_11_w"
+  output: "gpu_0/gconv3_11"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 272
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv3_11"
+  input: "gpu_0/gconv3_11_bn_s"
+  input: "gpu_0/gconv3_11_bn_b"
+  input: "gpu_0/gconv3_11_bn_rm"
+  input: "gpu_0/gconv3_11_bn_riv"
+  output: "gpu_0/gconv3_11_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv3_11_bn"
+  input: "gpu_0/gconv1_23_w"
+  output: "gpu_0/gconv1_23"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_23"
+  input: "gpu_0/gconv1_23_bn_s"
+  input: "gpu_0/gconv1_23_bn_b"
+  input: "gpu_0/gconv1_23_bn_rm"
+  input: "gpu_0/gconv1_23_bn_riv"
+  output: "gpu_0/gconv1_23_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_23_bn"
+  input: "gpu_0/block10"
+  output: "gpu_0/block11"
+  name: ""
+  type: "Sum"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block11"
+  output: "gpu_0/block11"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/block11"
+  input: "gpu_0/gconv1_24_w"
+  output: "gpu_0/gconv1_24"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_24"
+  input: "gpu_0/gconv1_24_bn_s"
+  input: "gpu_0/gconv1_24_bn_b"
+  input: "gpu_0/gconv1_24_bn_rm"
+  input: "gpu_0/gconv1_24_bn_riv"
+  output: "gpu_0/gconv1_24_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_24_bn"
+  output: "gpu_0/gconv1_24_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_24_bn"
+  output: "gpu_0/shuffle_12"
+  name: ""
+  type: "ChannelShuffle"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/shuffle_12"
+  input: "gpu_0/gconv3_12_w"
+  output: "gpu_0/gconv3_12"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 272
+  }
+  arg {
+    name: "stride"
+    i: 2
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv3_12"
+  input: "gpu_0/gconv3_12_bn_s"
+  input: "gpu_0/gconv3_12_bn_b"
+  input: "gpu_0/gconv3_12_bn_rm"
+  input: "gpu_0/gconv3_12_bn_riv"
+  output: "gpu_0/gconv3_12_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv3_12_bn"
+  input: "gpu_0/gconv1_25_w"
+  output: "gpu_0/gconv1_25"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_25"
+  input: "gpu_0/gconv1_25_bn_s"
+  input: "gpu_0/gconv1_25_bn_b"
+  input: "gpu_0/gconv1_25_bn_rm"
+  input: "gpu_0/gconv1_25_bn_riv"
+  output: "gpu_0/gconv1_25_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block11"
+  output: "gpu_0/pool_3"
+  name: ""
+  type: "AveragePool"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "stride"
+    i: 2
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_25_bn"
+  input: "gpu_0/pool_3"
+  output: "gpu_0/block12"
+  output: "gpu_0/_block12_concat_dims"
+  name: ""
+  type: "Concat"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block12"
+  output: "gpu_0/block12"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/block12"
+  input: "gpu_0/gconv1_26_w"
+  output: "gpu_0/gconv1_26"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_26"
+  input: "gpu_0/gconv1_26_bn_s"
+  input: "gpu_0/gconv1_26_bn_b"
+  input: "gpu_0/gconv1_26_bn_rm"
+  input: "gpu_0/gconv1_26_bn_riv"
+  output: "gpu_0/gconv1_26_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_26_bn"
+  output: "gpu_0/gconv1_26_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_26_bn"
+  output: "gpu_0/shuffle_13"
+  name: ""
+  type: "ChannelShuffle"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/shuffle_13"
+  input: "gpu_0/gconv3_13_w"
+  output: "gpu_0/gconv3_13"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 544
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv3_13"
+  input: "gpu_0/gconv3_13_bn_s"
+  input: "gpu_0/gconv3_13_bn_b"
+  input: "gpu_0/gconv3_13_bn_rm"
+  input: "gpu_0/gconv3_13_bn_riv"
+  output: "gpu_0/gconv3_13_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv3_13_bn"
+  input: "gpu_0/gconv1_27_w"
+  output: "gpu_0/gconv1_27"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_27"
+  input: "gpu_0/gconv1_27_bn_s"
+  input: "gpu_0/gconv1_27_bn_b"
+  input: "gpu_0/gconv1_27_bn_rm"
+  input: "gpu_0/gconv1_27_bn_riv"
+  output: "gpu_0/gconv1_27_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_27_bn"
+  input: "gpu_0/block12"
+  output: "gpu_0/block13"
+  name: ""
+  type: "Sum"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block13"
+  output: "gpu_0/block13"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/block13"
+  input: "gpu_0/gconv1_28_w"
+  output: "gpu_0/gconv1_28"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_28"
+  input: "gpu_0/gconv1_28_bn_s"
+  input: "gpu_0/gconv1_28_bn_b"
+  input: "gpu_0/gconv1_28_bn_rm"
+  input: "gpu_0/gconv1_28_bn_riv"
+  output: "gpu_0/gconv1_28_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_28_bn"
+  output: "gpu_0/gconv1_28_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_28_bn"
+  output: "gpu_0/shuffle_14"
+  name: ""
+  type: "ChannelShuffle"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/shuffle_14"
+  input: "gpu_0/gconv3_14_w"
+  output: "gpu_0/gconv3_14"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 544
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv3_14"
+  input: "gpu_0/gconv3_14_bn_s"
+  input: "gpu_0/gconv3_14_bn_b"
+  input: "gpu_0/gconv3_14_bn_rm"
+  input: "gpu_0/gconv3_14_bn_riv"
+  output: "gpu_0/gconv3_14_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv3_14_bn"
+  input: "gpu_0/gconv1_29_w"
+  output: "gpu_0/gconv1_29"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_29"
+  input: "gpu_0/gconv1_29_bn_s"
+  input: "gpu_0/gconv1_29_bn_b"
+  input: "gpu_0/gconv1_29_bn_rm"
+  input: "gpu_0/gconv1_29_bn_riv"
+  output: "gpu_0/gconv1_29_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_29_bn"
+  input: "gpu_0/block13"
+  output: "gpu_0/block14"
+  name: ""
+  type: "Sum"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block14"
+  output: "gpu_0/block14"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/block14"
+  input: "gpu_0/gconv1_30_w"
+  output: "gpu_0/gconv1_30"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_30"
+  input: "gpu_0/gconv1_30_bn_s"
+  input: "gpu_0/gconv1_30_bn_b"
+  input: "gpu_0/gconv1_30_bn_rm"
+  input: "gpu_0/gconv1_30_bn_riv"
+  output: "gpu_0/gconv1_30_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_30_bn"
+  output: "gpu_0/gconv1_30_bn"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_30_bn"
+  output: "gpu_0/shuffle_15"
+  name: ""
+  type: "ChannelShuffle"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/shuffle_15"
+  input: "gpu_0/gconv3_15_w"
+  output: "gpu_0/gconv3_15"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 3
+  }
+  arg {
+    name: "pad"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 544
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv3_15"
+  input: "gpu_0/gconv3_15_bn_s"
+  input: "gpu_0/gconv3_15_bn_b"
+  input: "gpu_0/gconv3_15_bn_rm"
+  input: "gpu_0/gconv3_15_bn_riv"
+  output: "gpu_0/gconv3_15_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv3_15_bn"
+  input: "gpu_0/gconv1_31_w"
+  output: "gpu_0/gconv1_31"
+  name: ""
+  type: "Conv"
+  arg {
+    name: "kernel"
+    i: 1
+  }
+  arg {
+    name: "group"
+    i: 4
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  arg {
+    name: "pad"
+    i: 0
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/gconv1_31"
+  input: "gpu_0/gconv1_31_bn_s"
+  input: "gpu_0/gconv1_31_bn_b"
+  input: "gpu_0/gconv1_31_bn_rm"
+  input: "gpu_0/gconv1_31_bn_riv"
+  output: "gpu_0/gconv1_31_bn"
+  name: ""
+  type: "SpatialBN"
+  arg {
+    name: "is_test"
+    i: 1
+  }
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/gconv1_31_bn"
+  input: "gpu_0/block14"
+  output: "gpu_0/block15"
+  name: ""
+  type: "Sum"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/block15"
+  output: "gpu_0/block15"
+  name: ""
+  type: "Relu"
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/block15"
+  output: "gpu_0/final_avg"
+  name: ""
+  type: "AveragePool"
+  arg {
+    name: "kernel"
+    i: 7
+  }
+  arg {
+    name: "stride"
+    i: 1
+  }
+  device_option {
+  }
+  engine: ""
+}
+op {
+  input: "gpu_0/final_avg"
+  input: "gpu_0/pred_w"
+  input: "gpu_0/pred_b"
+  output: "gpu_0/pred"
+  name: ""
+  type: "FC"
+  device_option {
+  }
+}
+op {
+  input: "gpu_0/pred"
+  output: "gpu_0/softmax"
+  name: ""
+  type: "Softmax"
+  device_option {
+  }
+  engine: ""
+}
+external_input: "gpu_0/data"
+external_input: "gpu_0/gconv3_9_bn_s"
+external_input: "gpu_0/gconv1_25_bn_riv"
+external_input: "gpu_0/gconv1_11_bn_riv"
+external_input: "gpu_0/gconv1_13_bn_b"
+external_input: "gpu_0/gconv1_15_bn_b"
+external_input: "gpu_0/gconv3_1_bn_s"
+external_input: "gpu_0/gconv1_23_bn_b"
+external_input: "gpu_0/gconv1_30_w"
+external_input: "gpu_0/gconv1_9_bn_riv"
+external_input: "gpu_0/gconv3_7_bn_rm"
+external_input: "gpu_0/gconv1_20_w"
+external_input: "gpu_0/gconv3_9_bn_b"
+external_input: "gpu_0/gconv1_13_bn_s"
+external_input: "gpu_0/gconv1_14_bn_s"
+external_input: "gpu_0/gconv1_15_bn_s"
+external_input: "gpu_0/gconv3_1_bn_b"
+external_input: "gpu_0/gconv1_23_bn_s"
+external_input: "gpu_0/gconv1_26_w"
+external_input: "gpu_0/gconv3_13_bn_rm"
+external_input: "gpu_0/gconv1_26_bn_s"
+external_input: "gpu_0/gconv1_27_w"
+external_input: "gpu_0/gconv1_18_bn_s"
+external_input: "gpu_0/gconv3_13_bn_s"
+external_input: "gpu_0/gconv3_12_bn_rm"
+external_input: "gpu_0/gconv1_15_w"
+external_input: "gpu_0/gconv3_3_bn_riv"
+external_input: "gpu_0/gconv1_26_bn_b"
+external_input: "gpu_0/gconv1_25_w"
+external_input: "gpu_0/gconv1_30_bn_b"
+external_input: "gpu_0/gconv3_12_bn_s"
+external_input: "gpu_0/gconv3_5_w"
+external_input: "gpu_0/gconv1_13_bn_rm"
+external_input: "gpu_0/gconv1_22_bn_s"
+external_input: "gpu_0/gconv3_9_bn_riv"
+external_input: "gpu_0/gconv1_24_w"
+external_input: "gpu_0/pred_w"
+external_input: "gpu_0/gconv3_4_bn_rm"
+external_input: "gpu_0/gconv1_10_bn_rm"
+external_input: "gpu_0/gconv3_11_bn_riv"
+external_input: "gpu_0/gconv3_13_bn_riv"
+external_input: "gpu_0/gconv1_6_bn_s"
+external_input: "gpu_0/gconv3_11_bn_b"
+external_input: "gpu_0/gconv1_19_w"
+external_input: "gpu_0/gconv3_11_bn_rm"
+external_input: "gpu_0/gconv3_3_bn_s"
+external_input: "gpu_0/gconv3_2_bn_riv"
+external_input: "gpu_0/gconv3_11_bn_s"
+external_input: "gpu_0/gconv1_31_bn_s"
+external_input: "gpu_0/gconv1_10_bn_riv"
+external_input: "gpu_0/gconv1_5_bn_riv"
+external_input: "gpu_0/gconv3_12_w"
+external_input: "gpu_0/gconv1_4_bn_rm"
+external_input: "gpu_0/gconv1_23_bn_riv"
+external_input: "gpu_0/gconv1_31_bn_rm"
+external_input: "gpu_0/gconv3_9_w"
+external_input: "gpu_0/gconv1_6_w"
+external_input: "gpu_0/gconv3_7_bn_s"
+external_input: "gpu_0/gconv3_14_bn_rm"
+external_input: "gpu_0/conv3_0_bn_b"
+external_input: "gpu_0/gconv1_9_bn_rm"
+external_input: "gpu_0/gconv1_14_bn_rm"
+external_input: "gpu_0/conv3_0_bn_s"
+external_input: "gpu_0/gconv1_4_w"
+external_input: "gpu_0/gconv1_19_bn_riv"
+external_input: "gpu_0/gconv3_3_w"
+external_input: "gpu_0/gconv1_31_bn_riv"
+external_input: "gpu_0/gconv3_7_w"
+external_input: "gpu_0/gconv3_10_bn_riv"
+external_input: "gpu_0/gconv1_21_bn_rm"
+external_input: "gpu_0/gconv3_5_bn_b"
+external_input: "gpu_0/gconv1_16_bn_rm"
+external_input: "gpu_0/gconv3_11_w"
+external_input: "gpu_0/gconv1_12_bn_riv"
+external_input: "gpu_0/gconv1_0_bn_rm"
+external_input: "gpu_0/gconv3_13_w"
+external_input: "gpu_0/gconv1_22_bn_riv"
+external_input: "gpu_0/gconv1_14_bn_b"
+external_input: "gpu_0/pred_b"
+external_input: "gpu_0/gconv1_28_bn_riv"
+external_input: "gpu_0/gconv1_29_w"
+external_input: "gpu_0/gconv3_5_bn_s"
+external_input: "gpu_0/gconv1_13_bn_riv"
+external_input: "gpu_0/gconv3_12_bn_b"
+external_input: "gpu_0/gconv3_3_bn_rm"
+external_input: "gpu_0/gconv1_28_bn_s"
+external_input: "gpu_0/gconv1_14_bn_riv"
+external_input: "gpu_0/gconv1_1_bn_riv"
+external_input: "gpu_0/gconv1_6_bn_b"
+external_input: "gpu_0/gconv1_7_bn_rm"
+external_input: "gpu_0/gconv1_12_bn_rm"
+external_input: "gpu_0/gconv3_14_bn_s"
+external_input: "gpu_0/gconv1_15_bn_rm"
+external_input: "gpu_0/gconv1_28_bn_b"
+external_input: "gpu_0/gconv3_0_bn_b"
+external_input: "gpu_0/gconv1_18_bn_riv"
+external_input: "gpu_0/gconv1_23_w"
+external_input: "gpu_0/gconv3_4_bn_s"
+external_input: "gpu_0/gconv1_25_bn_b"
+external_input: "gpu_0/gconv3_8_bn_rm"
+external_input: "gpu_0/gconv3_14_bn_riv"
+external_input: "gpu_0/gconv3_15_bn_s"
+external_input: "gpu_0/gconv1_26_bn_riv"
+external_input: "gpu_0/gconv1_22_bn_rm"
+external_input: "gpu_0/gconv1_16_bn_s"
+external_input: "gpu_0/gconv1_7_bn_b"
+external_input: "gpu_0/gconv1_21_bn_riv"
+external_input: "gpu_0/gconv3_13_bn_b"
+external_input: "gpu_0/gconv3_9_bn_rm"
+external_input: "gpu_0/gconv3_1_bn_riv"
+external_input: "gpu_0/gconv3_15_bn_b"
+external_input: "gpu_0/gconv1_16_bn_b"
+external_input: "gpu_0/gconv1_7_bn_s"
+external_input: "gpu_0/gconv1_31_w"
+external_input: "gpu_0/gconv3_1_bn_rm"
+external_input: "gpu_0/gconv1_12_bn_b"
+external_input: "gpu_0/gconv3_6_bn_rm"
+external_input: "gpu_0/gconv3_15_w"
+external_input: "gpu_0/gconv3_5_bn_riv"
+external_input: "gpu_0/gconv1_0_bn_riv"
+external_input: "gpu_0/gconv1_31_bn_b"
+external_input: "gpu_0/gconv1_30_bn_rm"
+external_input: "gpu_0/gconv3_7_bn_b"
+external_input: "gpu_0/gconv1_24_bn_s"
+external_input: "gpu_0/gconv1_10_bn_s"
+external_input: "gpu_0/gconv1_2_bn_riv"
+external_input: "gpu_0/gconv1_9_bn_b"
+external_input: "gpu_0/gconv1_3_w"
+external_input: "gpu_0/gconv1_4_bn_s"
+external_input: "gpu_0/gconv1_20_bn_s"
+external_input: "gpu_0/gconv1_4_bn_riv"
+external_input: "gpu_0/gconv1_0_bn_b"
+external_input: "gpu_0/gconv1_22_bn_b"
+external_input: "gpu_0/gconv1_10_bn_b"
+external_input: "gpu_0/gconv3_4_bn_riv"
+external_input: "gpu_0/gconv1_9_bn_s"
+external_input: "gpu_0/gconv1_4_bn_b"
+external_input: "gpu_0/gconv3_10_w"
+external_input: "gpu_0/gconv1_3_bn_riv"
+external_input: "gpu_0/gconv1_20_bn_b"
+external_input: "gpu_0/gconv1_0_bn_s"
+external_input: "gpu_0/gconv1_29_bn_rm"
+external_input: "gpu_0/gconv1_29_bn_riv"
+external_input: "gpu_0/gconv1_25_bn_rm"
+external_input: "gpu_0/gconv1_22_w"
+external_input: "gpu_0/gconv1_8_bn_b"
+external_input: "gpu_0/gconv3_0_bn_rm"
+external_input: "gpu_0/conv3_0_bn_riv"
+external_input: "gpu_0/gconv3_10_bn_b"
+external_input: "gpu_0/gconv3_2_w"
+external_input: "gpu_0/gconv1_16_w"
+external_input: "gpu_0/gconv3_8_bn_b"
+external_input: "gpu_0/gconv1_25_bn_s"
+external_input: "gpu_0/gconv1_6_bn_riv"
+external_input: "gpu_0/gconv1_8_bn_s"
+external_input: "gpu_0/gconv1_27_bn_rm"
+external_input: "gpu_0/gconv3_10_bn_s"
+external_input: "gpu_0/gconv1_20_bn_riv"
+external_input: "gpu_0/gconv1_1_bn_rm"
+external_input: "gpu_0/gconv3_8_bn_s"
+external_input: "gpu_0/gconv3_0_bn_riv"
+external_input: "gpu_0/gconv3_8_bn_riv"
+external_input: "gpu_0/gconv1_19_bn_s"
+external_input: "gpu_0/conv3_0_w"
+external_input: "gpu_0/gconv1_8_bn_rm"
+external_input: "gpu_0/gconv1_30_bn_s"
+external_input: "gpu_0/gconv1_5_bn_rm"
+external_input: "gpu_0/gconv3_5_bn_rm"
+external_input: "gpu_0/gconv3_4_bn_b"
+external_input: "gpu_0/gconv1_6_bn_rm"
+external_input: "gpu_0/gconv1_19_bn_b"
+external_input: "gpu_0/gconv1_17_bn_riv"
+external_input: "gpu_0/conv3_0_b"
+external_input: "gpu_0/gconv1_10_w"
+external_input: "gpu_0/gconv3_15_bn_riv"
+external_input: "gpu_0/gconv1_14_w"
+external_input: "gpu_0/gconv1_20_bn_rm"
+external_input: "gpu_0/gconv3_2_bn_b"
+external_input: "gpu_0/gconv1_3_bn_s"
+external_input: "gpu_0/gconv1_9_w"
+external_input: "gpu_0/gconv1_1_bn_b"
+external_input: "gpu_0/gconv3_10_bn_rm"
+external_input: "gpu_0/gconv1_21_bn_b"
+external_input: "gpu_0/gconv1_8_bn_riv"
+external_input: "gpu_0/gconv3_2_bn_rm"
+external_input: "gpu_0/gconv3_2_bn_s"
+external_input: "gpu_0/gconv3_14_bn_b"
+external_input: "gpu_0/gconv1_3_bn_b"
+external_input: "gpu_0/gconv1_1_bn_s"
+external_input: "gpu_0/gconv1_17_bn_rm"
+external_input: "gpu_0/gconv1_15_bn_riv"
+external_input: "gpu_0/gconv1_2_w"
+external_input: "gpu_0/gconv1_3_bn_rm"
+external_input: "gpu_0/gconv1_7_bn_riv"
+external_input: "gpu_0/gconv1_12_w"
+external_input: "gpu_0/gconv1_21_w"
+external_input: "gpu_0/gconv3_14_w"
+external_input: "gpu_0/gconv3_6_bn_s"
+external_input: "gpu_0/gconv3_6_w"
+external_input: "gpu_0/gconv1_28_w"
+external_input: "gpu_0/gconv3_12_bn_riv"
+external_input: "gpu_0/gconv1_24_bn_b"
+external_input: "gpu_0/gconv3_6_bn_b"
+external_input: "gpu_0/gconv3_0_w"
+external_input: "gpu_0/gconv1_27_bn_b"
+external_input: "gpu_0/gconv1_0_w"
+external_input: "gpu_0/gconv3_1_w"
+external_input: "gpu_0/gconv1_19_bn_rm"
+external_input: "gpu_0/gconv1_26_bn_rm"
+external_input: "gpu_0/gconv1_5_bn_s"
+external_input: "gpu_0/gconv1_28_bn_rm"
+external_input: "gpu_0/gconv3_4_w"
+external_input: "gpu_0/gconv1_2_bn_rm"
+external_input: "gpu_0/gconv1_21_bn_s"
+external_input: "gpu_0/gconv1_7_w"
+external_input: "gpu_0/gconv1_5_bn_b"
+external_input: "gpu_0/gconv3_6_bn_riv"
+external_input: "gpu_0/conv3_0_bn_rm"
+external_input: "gpu_0/gconv1_29_bn_s"
+external_input: "gpu_0/gconv1_5_w"
+external_input: "gpu_0/gconv3_3_bn_b"
+external_input: "gpu_0/gconv1_27_bn_s"
+external_input: "gpu_0/gconv3_15_bn_rm"
+external_input: "gpu_0/gconv1_2_bn_s"
+external_input: "gpu_0/gconv1_18_bn_rm"
+external_input: "gpu_0/gconv1_29_bn_b"
+external_input: "gpu_0/gconv1_13_w"
+external_input: "gpu_0/gconv1_23_bn_rm"
+external_input: "gpu_0/gconv1_12_bn_s"
+external_input: "gpu_0/gconv1_11_w"
+external_input: "gpu_0/gconv1_18_w"
+external_input: "gpu_0/gconv1_24_bn_riv"
+external_input: "gpu_0/gconv1_17_w"
+external_input: "gpu_0/gconv1_2_bn_b"
+external_input: "gpu_0/gconv1_11_bn_rm"
+external_input: "gpu_0/gconv1_11_bn_s"
+external_input: "gpu_0/gconv3_8_w"
+external_input: "gpu_0/gconv1_1_w"
+external_input: "gpu_0/gconv1_8_w"
+external_input: "gpu_0/gconv1_17_bn_b"
+external_input: "gpu_0/gconv3_0_bn_s"
+external_input: "gpu_0/gconv1_11_bn_b"
+external_input: "gpu_0/gconv3_7_bn_riv"
+external_input: "gpu_0/gconv1_18_bn_b"
+external_input: "gpu_0/gconv1_17_bn_s"
+external_input: "gpu_0/gconv1_24_bn_rm"
+external_input: "gpu_0/gconv1_30_bn_riv"
+external_input: "gpu_0/gconv1_16_bn_riv"
+external_input: "gpu_0/gconv1_27_bn_riv"
+external_output: "gpu_0/softmax"
